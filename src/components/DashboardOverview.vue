@@ -1,7 +1,7 @@
 `<template>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div 
+      <div
         @click="$emit('createSingle')"
         class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow cursor-pointer border border-gray-200"
       >
@@ -10,7 +10,7 @@
         <p class="text-gray-600">Launch a new website with our guided setup process</p>
       </div>
 
-      <div 
+      <div
         @click="$emit('createBulk')"
         class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow cursor-pointer border border-gray-200"
       >
