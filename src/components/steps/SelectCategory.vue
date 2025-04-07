@@ -21,7 +21,6 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import type { Category } from '../../types.ts';
 
 const props = defineProps<{
   selectedNiche: string | null;
@@ -34,8 +33,8 @@ const emit = defineEmits<{
 const categories = [
   { id: 'tech', name: 'Technology', niche: 'landing' },
   { id: 'fashion', name: 'Fashion', niche: 'ecommerce' },
-  // Add more categories here
-];
+  { id: 'sports', name: 'Sports', niche: 'sport-fantasy' },
+  { id: 'gaming', name: 'Gaming', niche: 'social-casino' },];
 
 const selectedCategory = ref<string | null>(null);
 
