@@ -8,7 +8,7 @@
         @click="updateCategory(category.id)"
         :class="[
           'p-4 rounded-lg border flex items-center',
-          selectedCategories.includes(category.id)
+          selectedCategory === category.id
             ? 'border-indigo-500 bg-indigo-50'
             : 'border-gray-200 hover:border-gray-300'
         ]"
@@ -24,10 +24,11 @@ import { ref, computed } from 'vue';
 
 const props = defineProps<{
   selectedNiche: string | null;
+  selectedCategory: string | null;
 }>();
 
 const emit = defineEmits<{
-  (e: 'update:selectedCategories', value: string[]): void;
+  (e: 'update:selectedCategory', value: string): void;
 }>();
 
 const categories = [
@@ -52,11 +53,6 @@ const filteredCategories = computed(() => {
 });
 
 const updateCategory = (id: string) => {
-  if (selectedCategories.value.includes(id)) {
-    selectedCategories.value = selectedCategories.value.filter(categoryId => categoryId !== id);
-  } else {
-    selectedCategories.value.push(id);
-  }
-  emit('update:selectedCategories', selectedCategories.value);
+  emit('update:selectedCategory', id);
 };
 </script>

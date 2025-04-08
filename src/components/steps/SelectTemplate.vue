@@ -45,64 +45,61 @@
                 </div>
               </template>
 
-              <script setup lang="ts">
-              import { ref, computed } from 'vue';
-              import type { Template } from '../../types.ts';
+<script setup lang="ts">
+import { ref, computed } from 'vue';
 
-              const props = defineProps<{
-                selectedTemplate: string | null;
-              }>();
+const props = defineProps<{
+  selectedTemplate: string | null;
+}>();
 
-              const emit = defineEmits<{
-                (e: 'update:selectedTemplate', value: string): void;
-              }>();
+const emit = defineEmits<{
+  (e: 'update:selectedTemplate', value: string): void;
+}>();
 
-              const templates = [
-                { id: 'template1', name: 'Template 1', preview: 'path/to/preview1.jpg' },
-                { id: 'template2', name: 'Template 2', preview: 'path/to/preview2.jpg' },
-                { id: 'template3', name: 'Template 3', preview: 'path/to/preview3.jpg' },
-                { id: 'template4', name: 'Template 4', preview: 'path/to/preview4.jpg' },
-                { id: 'template5', name: 'Template 5', preview: 'path/to/preview5.jpg' },
-                { id: 'template6', name: 'Template 6', preview: 'path/to/preview6.jpg' },
-                { id: 'template7', name: 'Template 7', preview: 'path/to/preview7.jpg' },
-                { id: 'template8', name: 'Template 8', preview: 'path/to/preview8.jpg' }
-              ];
+const templates = [
+  { id: 'template1', name: 'Template 1', preview: 'path/to/preview1.jpg' },
+  { id: 'template2', name: 'Template 2', preview: 'path/to/preview2.jpg' },
+  { id: 'template3', name: 'Template 3', preview: 'path/to/preview3.jpg' },
+  { id: 'template4', name: 'Template 4', preview: 'path/to/preview4.jpg' },
+  { id: 'template5', name: 'Template 5', preview: 'path/to/preview5.jpg' },
+  { id: 'template6', name: 'Template 6', preview: 'path/to/preview6.jpg' },
+  { id: 'template7', name: 'Template 7', preview: 'path/to/preview7.jpg' },
+  { id: 'template8', name: 'Template 8', preview: 'path/to/preview8.jpg' }
+];
 
-              const searchQuery = ref('');
-              const selectedTemplate = ref<string | null>(null);
-              const currentPage = ref(1);
-              const itemsPerPage = 4;
+const searchQuery = ref('');
+const currentPage = ref(1);
+const itemsPerPage = 4;
 
-              const filteredTemplates = computed(() => {
-                return templates.filter(template =>
-                  template.name.toLowerCase().includes(searchQuery.value.toLowerCase())
-                );
-              });
+const filteredTemplates = computed(() => {
+  return templates.filter(template =>
+    template.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
+});
 
-              const totalPages = computed(() => {
-                return Math.ceil(filteredTemplates.value.length / itemsPerPage);
-              });
+const totalPages = computed(() => {
+  return Math.ceil(filteredTemplates.value.length / itemsPerPage);
+});
 
-              const paginatedTemplates = computed(() => {
-                const start = (currentPage.value - 1) * itemsPerPage;
-                const end = start + itemsPerPage;
-                return filteredTemplates.value.slice(start, end);
-              });
+const paginatedTemplates = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  return filteredTemplates.value.slice(start, end);
+});
 
-              const updateTemplate = (id: string) => {
-                selectedTemplate.value = id;
-                emit('update:selectedTemplate', id);
-              };
+const updateTemplate = (id: string) => {
+  emit('update:selectedTemplate', id);
+};
 
-              const nextPage = () => {
-                if (currentPage.value < totalPages.value) {
-                  currentPage.value++;
-                }
-              };
+const nextPage = () => {
+  if (currentPage.value < totalPages.value) {
+    currentPage.value++;
+  }
+};
 
-              const prevPage = () => {
-                if (currentPage.value > 1) {
-                  currentPage.value--;
-                }
-              };
-              </script>
+const prevPage = () => {
+  if (currentPage.value > 1) {
+    currentPage.value--;
+  }
+};
+</script>
