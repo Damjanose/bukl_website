@@ -1,4 +1,4 @@
-`<template>
+<template>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div
@@ -21,7 +21,10 @@
     </div>
 
     <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+      <div
+        @click="$emit('view-history')"
+        class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow cursor-pointer border border-gray-200"
+      >
         <History class="h-8 w-8 text-indigo-500 mb-4" />
         <h3 class="text-xl font-semibold mb-2">Website History</h3>
         <p class="text-gray-600">View and manage your created websites</p>
@@ -42,5 +45,6 @@ import { Globe, Package, History, CreditCard } from 'lucide-vue-next';
 defineEmits<{
   (e: 'createSingle'): void;
   (e: 'createBulk'): void;
+  (e: 'view-history'): void;
 }>();
-</script>`
+</script>
