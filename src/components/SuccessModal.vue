@@ -4,7 +4,7 @@
       <h3 class="text-lg font-semibold mb-4">Success</h3>
       <p class="mb-4">Website created successfully!</p>
       <button @click="closeModal" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
-        Close
+        Thank you
       </button>
     </div>
   </div>

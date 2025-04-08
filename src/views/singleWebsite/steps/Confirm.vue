@@ -2,7 +2,7 @@
   <div>
     <h3 class="text-lg font-semibold mb-4">Confirm</h3>
     <div class="space-y-4">
-      <div>
+      <div class="border-b border-gray-200">
         <h4 class="text-md font-semibold flex items-center justify-between">
           Domain
           <button @click="goToStep(1)" class="text-gray-500 hover:text-gray-700">
@@ -11,7 +11,7 @@
         </h4>
         <p>{{ domain }}</p>
       </div>
-      <div>
+      <div class="border-b border-gray-200">
         <h4 class="text-md font-semibold flex items-center justify-between">
           Niche
           <button @click="goToStep(2)" class="text-gray-500 hover:text-gray-700">
@@ -20,7 +20,7 @@
         </h4>
         <p>{{ selectedNiche }}</p>
       </div>
-      <div>
+      <div class="border-b border-gray-200">
         <h4 class="text-md font-semibold flex items-center justify-between">
           Category
           <button @click="goToStep(3)" class="text-gray-500 hover:text-gray-700">
@@ -29,7 +29,7 @@
         </h4>
         <p>{{ selectedCategory }}</p>
       </div>
-      <div>
+      <div class="border-b border-gray-200">
         <h4 class="text-md font-semibold flex items-center justify-between">
           Template
           <button @click="goToStep(4)" class="text-gray-500 hover:text-gray-700">
@@ -38,7 +38,7 @@
         </h4>
         <p>{{ selectedTemplate }}</p>
       </div>
-      <div>
+      <div class="border-b border-gray-200">
         <h4 class="text-md font-semibold flex items-center justify-between">
           Hosting
           <button @click="goToStep(5)" class="text-gray-500 hover:text-gray-700">
@@ -58,18 +58,18 @@
         <div v-if="paymentDetails">
           <p v-if="selectedPaymentMethod === 'card'">
             <strong>Card Details:</strong><br />
-            Card Number: {{ paymentDetails.cardNumber }}<br />
-            Cardholder Name: {{ paymentDetails.cardholderName }}<br />
-            Expiry Date: {{ paymentDetails.expiryDate }}
+            Card Number: {{ paymentDetails.card.cardNumber }}<br />
+            Cardholder Name: {{ paymentDetails.card.cardholderName }}<br />
+            Expiry Date: {{ paymentDetails.card.expiryDate }}
           </p>
           <p v-if="selectedPaymentMethod === 'bank'">
             <strong>Bank Transfer:</strong><br />
-            IBAN: {{ paymentDetails.iban }}
+            IBAN: {{ paymentDetails.bank.iban }}
           </p>
           <p v-if="selectedPaymentMethod === 'crypto'">
             <strong>Crypto Payment:</strong><br />
-            Crypto Type: {{ paymentDetails.cryptoType }}<br />
-            Wallet Address: {{ paymentDetails.walletAddress }}
+            Crypto Type: {{ paymentDetails.crypto.cryptoType }}<br />
+            Wallet Address: {{ paymentDetails.crypto.walletAddress }}
           </p>
         </div>
       </div>

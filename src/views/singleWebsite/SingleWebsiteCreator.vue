@@ -53,8 +53,8 @@
         <SelectCategory
           v-if="currentStep === 3"
           :selectedNiche="selectedNiche"
-          :selectedCategory="selectedCategory"
-          @update:selectedCategory="selectedCategory = $event"
+          :selectedCategories="selectedCategories"
+          @update:selectedCategories="selectedCategories = $event"
         />
         <SelectTemplate
           v-if="currentStep === 4"
@@ -144,6 +144,7 @@
   const selectedPaymentMethod = ref(null);
   const selectedPaymentDetails = ref({});
   const showSuccessModal = ref(false);
+  const selectedCategories = ref<string[]>([]);
 
   const steps = [
     'Domain',
@@ -161,7 +162,7 @@
     } else if (currentStep.value === 2) {
       return selectedNiche.value !== null;
     } else if (currentStep.value === 3) {
-      return selectedCategory.value !== null;
+      return selectedCategories.value.length > 0;
     } else if (currentStep.value === 4) {
       return selectedTemplate.value !== null;
     } else if (currentStep.value === 5) {
