@@ -8,7 +8,7 @@
         @click="updateCategory(category.id)"
         :class="[
           'p-4 rounded-lg border flex items-center',
-          selectedCategory === category.id
+          selectedCategories.includes(category.id)
             ? 'border-indigo-500 bg-indigo-50'
             : 'border-gray-200 hover:border-gray-300'
         ]"
@@ -27,7 +27,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: 'update:selectedCategory', value: string): void;
+  (e: 'update:selectedCategories', value: string[]): void;
 }>();
 
 const categories = [
@@ -45,14 +45,18 @@ const categories = [
   { id: 'basketball', name: 'Basketball', niche: 'social-casino' },
 ];
 
-const selectedCategory = ref<string | null>(null);
+const selectedCategories = ref<string[]>([]);
 
 const filteredCategories = computed(() => {
   return categories.filter(category => category.niche === props.selectedNiche);
 });
 
 const updateCategory = (id: string) => {
-  selectedCategory.value = id;
-  emit('update:selectedCategory', id);
+  if (selectedCategories.value.includes(id)) {
+    selectedCategories.value = selectedCategories.value.filter(categoryId => categoryId !== id);
+  } else {
+    selectedCategories.value.push(id);
+  }
+  emit('update:selectedCategories', selectedCategories.value);
 };
 </script>

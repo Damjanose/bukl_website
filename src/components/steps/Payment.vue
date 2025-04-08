@@ -45,14 +45,63 @@
         </button>
       </div>
     </div>
+
+    <!-- Conditional Forms -->
+    <div class="mt-6">
+      <div v-if="selectedPaymentMethod === 'card'">
+        <h4 class="text-md font-semibold mb-4">Card Details</h4>
+        <div class="flex items-center mb-4 border rounded-lg p-2">
+          <CreditCard class="h-5 w-5 text-gray-500 mr-2" />
+          <input type="text" placeholder="Card Number" class="w-full outline-none" />
+        </div>
+        <div class="flex items-center mb-4 border rounded-lg p-2">
+          <User class="h-5 w-5 text-gray-500 mr-2" />
+          <input type="text" placeholder="Cardholder Name" class="w-full outline-none" />
+        </div>
+        <div class="flex items-center mb-4 border rounded-lg p-2">
+          <Calendar class="h-5 w-5 text-gray-500 mr-2" />
+          <input type="text" placeholder="Expiry Date (MM/YY)" class="w-full outline-none" />
+        </div>
+        <div class="flex items-center mb-4 border rounded-lg p-2">
+          <Lock class="h-5 w-5 text-gray-500 mr-2" />
+          <input type="text" placeholder="CVV" class="w-full outline-none" />
+        </div>
+      </div>
+
+      <div v-if="selectedPaymentMethod === 'bank'">
+        <h4 class="text-md font-semibold mb-4">Bank Transfer</h4>
+        <div class="flex items-center mb-4 border rounded-lg p-2">
+          <Banknote class="h-5 w-5 text-gray-500 mr-2" />
+          <input type="text" placeholder="IBAN" class="w-full outline-none" />
+        </div>
+      </div>
+
+      <div v-if="selectedPaymentMethod === 'crypto'">
+        <h4 class="text-md font-semibold mb-4">Crypto Payment</h4>
+        <div class="flex items-center mb-4 border rounded-lg p-2">
+          <Bitcoin class="h-5 w-5 text-gray-500 mr-2" />
+          <select v-model="selectedCrypto" class="w-full outline-none">
+            <option value="bitcoin">Bitcoin</option>
+            <option value="ethereum">Ethereum</option>
+            <option value="litecoin">Litecoin</option>
+          </select>
+        </div>
+        <div class="flex items-center mb-4 border rounded-lg p-2">
+          <Wallet class="h-5 w-5 text-gray-500 mr-2" />
+          <input type="text" placeholder="Wallet Address" class="w-full outline-none" />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { CreditCard, User, Calendar, Lock, Banknote, Bitcoin, Wallet } from 'lucide-vue-next';
 
 const credits = ref(100); // Example credit balance
 const selectedPaymentMethod = ref<'crypto' | 'bank' | 'card' | null>(null);
+const selectedCrypto = ref<string | null>(null);
 
 const purchaseCredits = () => {
   // Implement credit purchase logic here
