@@ -31,8 +31,8 @@
 import { ref } from 'vue';
 import DashboardHeader from './components/DashboardHeader.vue';
 import DashboardOverview from './components/DashboardOverview.vue';
-import SingleWebsiteCreator from './components/SingleWebsiteCreator.vue';
-import WebsiteHistory from './components/WebsiteHistory.vue';
+import SingleWebsiteCreator from './views/SingleWebsiteCreator.vue';
+import WebsiteHistory from './views/WebsiteHistory.vue';
 
 const view = ref<'dashboard' | 'create-single' | 'create-bulk' | 'history'>('dashboard');
 const credits = ref(100);

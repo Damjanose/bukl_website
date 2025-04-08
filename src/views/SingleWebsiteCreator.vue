@@ -105,14 +105,14 @@
 <script setup lang="ts">
   import { ref, computed } from 'vue';
   import { ArrowLeft } from 'lucide-vue-next';
-  import DomainSetup from './steps/DomainSetup.vue';
-  import SelectNiche from './steps/SelectNiche.vue';
-  import SelectCategory from './steps/SelectCategory.vue';
-  import SelectTemplate from './steps/SelectTemplate.vue';
-  import SelectHosting from './steps/SelectHosting.vue';
-  import Payment from './steps/Payment.vue';
-  import Confirm from './steps/Confirm.vue';
-  import SuccessModal from './SuccessModal.vue';
+  import DomainSetup from '../components/steps/DomainSetup.vue';
+  import SelectNiche from '../components/steps/SelectNiche.vue';
+  import SelectCategory from '../components/steps/SelectCategory.vue';
+  import SelectTemplate from '../components/steps/SelectTemplate.vue';
+  import SelectHosting from '../components/steps/SelectHosting.vue';
+  import Payment from '../components/steps/Payment.vue';
+  import Confirm from '../components/steps/Confirm.vue';
+  import SuccessModal from '../components/SuccessModal.vue';
 
   const props = defineProps<{
     isBulk?: boolean;
