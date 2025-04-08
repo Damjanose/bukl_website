@@ -39,8 +39,17 @@
           </div>
         </div>
 
-        <DomainSetup v-if="currentStep === 1" :domain="domain" @update:domain="domain = $event" />
-        <SelectNiche v-if="currentStep === 2" :selectedNiche="selectedNiche" @update:selectedNiche="selectedNiche = $event" />
+        <DomainSetup
+          v-if="currentStep === 1"
+          :domain="domain"
+          @update:domain="domain = $event"
+          @domain-valid="handleNextStep"
+        />
+        <SelectNiche
+          v-if="currentStep === 2"
+          :selectedNiche="selectedNiche"
+          @update:selectedNiche="selectedNiche = $event"
+        />
         <SelectCategory
           v-if="currentStep === 3"
           :selectedNiche="selectedNiche"
@@ -98,7 +107,11 @@
         </div>
       </div>
 
-      <SuccessModal :visible="showSuccessModal" @close="showSuccessModal = false" @back="$emit('back')" />
+      <SuccessModal
+        :visible="showSuccessModal"
+        @close="showSuccessModal = false"
+        @back="$emit('back')"
+      />
     </div>
   </template>
 
@@ -139,7 +152,7 @@
     'Template',
     'Hosting',
     'Payment',
-    'Confirm'
+    'Confirm',
   ];
 
   const canProceed = computed(() => {

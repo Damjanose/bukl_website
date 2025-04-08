@@ -32,7 +32,7 @@ import { ref } from 'vue';
 import DashboardHeader from './components/DashboardHeader.vue';
 import DashboardOverview from './components/DashboardOverview.vue';
 import SingleWebsiteCreator from './views/singleWebsite/SingleWebsiteCreator.vue';
-import WebsiteHistory from './views/WebsiteHistory.vue';
+import WebsiteHistory from './views/history/WebsiteHistory.vue';
 
 const view = ref<'dashboard' | 'create-single' | 'create-bulk' | 'history'>('dashboard');
 const credits = ref(100);
