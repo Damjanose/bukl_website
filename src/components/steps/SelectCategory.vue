@@ -32,9 +32,18 @@ const emit = defineEmits<{
 
 const categories = [
   { id: 'tech', name: 'Technology', niche: 'landing' },
+  { id: 'construction', name: 'Construction', niche: 'landing' },
+  { id: 'landscaping', name: 'Landscaping', niche: 'landing' },
   { id: 'fashion', name: 'Fashion', niche: 'ecommerce' },
+  { id: 'mode', name: 'Mode', niche: 'ecommerce' },
+  { id: 'tech', name: 'Tech', niche: 'ecommerce' },
   { id: 'sports', name: 'Sports', niche: 'sport-fantasy' },
-  { id: 'gaming', name: 'Gaming', niche: 'social-casino' },];
+  { id: 'games', name: 'Games', niche: 'sport-fantasy' },
+  { id: 'clothes', name: 'Clothes', niche: 'sport-fantasy' },
+  { id: 'gaming', name: 'Gaming', niche: 'social-casino' },
+  { id: 'football', name: 'Football', niche: 'social-casino' },
+  { id: 'basketball', name: 'Basketball', niche: 'social-casino' },
+];
 
 const selectedCategory = ref<string | null>(null);
 
