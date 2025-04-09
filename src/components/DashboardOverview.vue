@@ -30,7 +30,10 @@
         <p class="text-gray-600">View and manage your created websites</p>
       </div>
 
-      <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+      <div
+        @click="$emit('buy-credits')"
+        class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow cursor-pointer border border-gray-200"
+      >
         <CreditCard class="h-8 w-8 text-indigo-500 mb-4" />
         <h3 class="text-xl font-semibold mb-2">Buy Credits</h3>
         <p class="text-gray-600">Purchase credits to create more websites</p>
@@ -40,11 +43,12 @@
 </template>
 
 <script setup lang="ts">
-import { Globe, Package, History, CreditCard } from 'lucide-vue-next';
+  import { Globe, Package, History, CreditCard } from 'lucide-vue-next';
 
-defineEmits<{
-  (e: 'createSingle'): void;
-  (e: 'createBulk'): void;
-  (e: 'view-history'): void;
-}>();
+  defineEmits<{
+    (e: 'createSingle'): void;
+    (e: 'createBulk'): void;
+    (e: 'view-history'): void;
+    (e: 'buy-credits'): void;
+  }>();
 </script>
