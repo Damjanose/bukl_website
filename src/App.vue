@@ -1,6 +1,10 @@
 <template>
   <div class="min-h-screen bg-gray-50">
-    <DashboardHeader :credits="credits" @navigate-buy-credits="view = 'buy-credits'" />
+    <DashboardHeader
+      :credits="credits"
+      @navigate-buy-credits="view = 'buy-credits'"
+      @navigate-pricing="view = 'pricing'"
+    />
 
     <DashboardOverview
       v-if="view === 'dashboard'"
@@ -30,6 +34,11 @@
       @credits-updated="updateCredits"
       @back="view = 'dashboard'"
     />
+
+    <PricingScreen
+      v-if="view === 'pricing'"
+      @back="view = 'dashboard'"
+    />
   </div>
 </template>
 
@@ -41,8 +50,9 @@
   import WebsiteHistory from './views/history/WebsiteHistory.vue';
   import BulkWebsiteCreator from './views/bulkWebsites/BulkWebsiteCreator.vue';
   import BuyCredits from './views/buyCredits/BuyCredits.vue';
+  import PricingScreen from './views/pricing/PricingScreen.vue';
 
-  const view = ref<'dashboard' | 'create-single' | 'create-bulk' | 'history' | 'buy-credits'>('dashboard');
+  const view = ref<'dashboard' | 'create-single' | 'create-bulk' | 'history' | 'buy-credits' | 'pricing'>('dashboard');
   const credits = ref<number>(parseInt(localStorage.getItem('credits') || '0', 10));
 
   const updateCredits = (newCredits: number) => {

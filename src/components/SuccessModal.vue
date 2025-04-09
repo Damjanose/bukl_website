@@ -24,6 +24,5 @@ const emit = defineEmits<{
 const closeModal = () => {
   emit('close');
   emit('back');
-
 };
 </script>
