@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen bg-gray-50">
-    <DashboardHeader :credits="credits" />
+    <DashboardHeader :credits="credits" @navigate-buy-credits="view = 'buy-credits'" />
 
     <DashboardOverview
       v-if="view === 'dashboard'"
@@ -34,22 +34,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import DashboardHeader from './components/DashboardHeader.vue';
-import DashboardOverview from './components/DashboardOverview.vue';
-import SingleWebsiteCreator from './views/singleWebsite/SingleWebsiteCreator.vue';
-import WebsiteHistory from './views/history/WebsiteHistory.vue';
-import BulkWebsiteCreator from './views/bulkWebsites/BulkWebsiteCreator.vue';
-import BuyCredits from './views/buyCredits/BuyCredits.vue';
+  import { ref, watch } from 'vue';
+  import DashboardHeader from './components/DashboardHeader.vue';
+  import DashboardOverview from './components/DashboardOverview.vue';
+  import SingleWebsiteCreator from './views/singleWebsite/SingleWebsiteCreator.vue';
+  import WebsiteHistory from './views/history/WebsiteHistory.vue';
+  import BulkWebsiteCreator from './views/bulkWebsites/BulkWebsiteCreator.vue';
+  import BuyCredits from './views/buyCredits/BuyCredits.vue';
 
-const view = ref<'dashboard' | 'create-single' | 'create-bulk' | 'history' | 'buy-credits'>('dashboard');
-const credits = ref<number>(parseInt(localStorage.getItem('credits') || '0', 10));
+  const view = ref<'dashboard' | 'create-single' | 'create-bulk' | 'history' | 'buy-credits'>('dashboard');
+  const credits = ref<number>(parseInt(localStorage.getItem('credits') || '0', 10));
 
-const updateCredits = (newCredits: number) => {
-  credits.value = newCredits;
-};
+  const updateCredits = (newCredits: number) => {
+    credits.value = newCredits;
+  };
 
-watch(credits, (newCredits) => {
-  localStorage.setItem('credits', newCredits.toString());
-});
+  watch(credits, (newCredits) => {
+    localStorage.setItem('credits', newCredits.toString());
+  });
 </script>

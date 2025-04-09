@@ -12,7 +12,10 @@
         </div>
 
         <div class="flex items-center space-x-4">
-          <div class="flex items-center bg-indigo-50 px-4 py-2 rounded-lg">
+          <div
+            class="flex items-center bg-indigo-50 px-4 py-2 rounded-lg cursor-pointer"
+            @click="$emit('navigate-buy-credits')"
+          >
             <Wallet class="h-5 w-5 text-indigo-500 mr-2" />
             <span class="font-medium text-indigo-700">{{ credits }} Credits</span>
           </div>
@@ -43,5 +46,6 @@
 
   defineEmits<{
     (e: 'navigate-dashboard'): void;
+    (e: 'navigate-buy-credits'): void;
   }>();
 </script>
