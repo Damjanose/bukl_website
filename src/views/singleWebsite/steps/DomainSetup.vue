@@ -52,7 +52,6 @@
       return;
     }
 
-    // Simulate an API call to check domain availability
     const isAvailable = await fakeDomainCheck(localDomain.value);
     domainStatus.value = isAvailable ? 'Available' : 'Not Available';
 
@@ -61,12 +60,11 @@
     }
   };
 
-  // Simulated API call
   const fakeDomainCheck = async (domain: string): Promise<boolean> => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve(domain.length % 2 === 0); // Simulate availability based on domain length
-      }, 1000);
+        resolve(domain.length % 2 === 0);
+      }, 500);
     });
   };
 </script>
