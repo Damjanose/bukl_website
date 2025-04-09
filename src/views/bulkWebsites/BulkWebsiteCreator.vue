@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <button
       @click="$emit('back')"
       class="flex items-center text-gray-600 hover:text-gray-900 mb-8"
@@ -9,7 +9,7 @@
     </button>
 
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
-      <h2 class="text-2xl font-bold mb-6">Bulk Website Creation_2</h2>
+      <h2 class="text-2xl font-bold mb-6">Bulk Website Creation</h2>
 
       <div class="mb-8">
         <div class="flex items-center">
@@ -89,7 +89,8 @@
         v-model:selectedPaymentMethod="selectedPaymentMethod"
         v-model:paymentDetails="selectedPaymentDetails"
       />
-      <Confirm
+
+      <ConfirmBulk
         v-if="currentStep === 8"
         :domains="domains"
         :selectedNiche="selectedNiche"
@@ -100,6 +101,7 @@
         :paymentDetails="selectedPaymentDetails"
         @goToStep="currentStep = $event"
         @confirm="handleConfirm"
+        :number-of-websites="numberOfWebsites"
       />
 
       <div class="mt-8 flex justify-between">
@@ -143,6 +145,7 @@ import SelectHosting from '../singleWebsite/steps/SelectHosting.vue';
 import Payment from '../singleWebsite/steps/Payment.vue';
 import Confirm from '../singleWebsite/steps/Confirm.vue';
 import SuccessModal from '../../components/SuccessModal.vue';
+import ConfirmBulk from "./ConfirmBulk.vue";
 
 const emit = defineEmits<{
   (e: 'back'): void;
@@ -214,7 +217,7 @@ const handleConfirm = () => {
 
   const createdWebsites = JSON.parse(localStorage.getItem('Created_websites') || '[]');
   createdWebsites.push(...websitesData);
-  localStorage.setItem('Created_websites', JSON.stringify(createdWebsites));
+  localStorage.setItem('Created_bulk_websites', JSON.stringify(createdWebsites));
   showSuccessModal.value = true;
 };
 </script>
