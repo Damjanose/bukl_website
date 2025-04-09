@@ -3,18 +3,6 @@
     <h3 class="text-lg font-semibold mb-4">Confirm Bulk Website Creation</h3>
     <div class="mb-4">
       <h4 class="text-md font-semibold flex items-center justify-between">
-        Number of Websites
-        <button
-          @click="$emit('goToStep', 1)"
-          class="text-gray-500 hover:text-gray-700"
-        >
-          <Edit3 class="h-5 w-5" />
-        </button>
-      </h4>
-      <p>{{ numberOfWebsites }}</p>
-    </div>
-    <div class="mb-4">
-      <h4 class="text-md font-semibold flex items-center justify-between">
         Domains
         <button
           @click="$emit('goToStep', 2)"
@@ -23,8 +11,8 @@
           <Edit3 class="h-5 w-5" />
         </button>
       </h4>
-      <ul class="list-disc pl-5">
-        <li v-for="(domain, index) in domains" :key="index">{{ domain }}</li>
+      <ul class="list-disc pl-5 ml-3">
+        <li v-for="(domain, index) in domains" :key="index">{{ index + 1 }}. {{ domain }}</li>
       </ul>
     </div>
     <div class="mb-4">
@@ -37,7 +25,7 @@
           <Edit3 class="h-5 w-5" />
         </button>
       </h4>
-      <p>{{ selectedNiche }}</p>
+      <p class="ml-3">{{ selectedNiche }}</p>
     </div>
     <div class="mb-4">
       <h4 class="text-md font-semibold flex items-center justify-between">
@@ -49,7 +37,7 @@
           <Edit3 class="h-5 w-5" />
         </button>
       </h4>
-      <p>{{ selectedCategories.join(', ') }}</p>
+      <p class="ml-3">{{ selectedCategories.join(', ') }}</p>
     </div>
     <div class="mb-4">
       <h4 class="text-md font-semibold flex items-center justify-between">
@@ -61,7 +49,7 @@
           <Edit3 class="h-5 w-5" />
         </button>
       </h4>
-      <p>{{ selectedTemplate }}</p>
+      <p class="ml-3">{{ selectedTemplate }}</p>
     </div>
     <div class="mb-4">
       <h4 class="text-md font-semibold flex items-center justify-between">
@@ -73,7 +61,7 @@
           <Edit3 class="h-5 w-5" />
         </button>
       </h4>
-      <p>{{ selectedHosting }}</p>
+      <p class="ml-3">{{ selectedHosting }}</p>
     </div>
     <div>
       <h4 class="text-md font-semibold flex items-center justify-between">
@@ -85,8 +73,7 @@
           <Edit3 class="h-5 w-5" />
         </button>
       </h4>
-      <p>{{ selectedPaymentMethod }}</p>
-      <div v-if="paymentDetails">
+      <div v-if="paymentDetails" class="ml-3">
         <p v-if="selectedPaymentMethod === 'card'">
           <strong>Card Details:</strong><br />
           Card Number: {{ paymentDetails.card.cardNumber }}<br />
@@ -105,13 +92,7 @@
       </div>
     </div>
 
-    <div class="flex justify-between mt-8">
-      <button
-        @click="$emit('goToStep', 7)"
-        class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200"
-      >
-        Back
-      </button>
+    <div class="flex justify-end mt-8">
       <button
         @click="$emit('confirm')"
         class="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"

@@ -98,17 +98,41 @@
             :selectedHosting="selectedHosting"
             @update:selectedHosting="selectedHosting = $event"
           />
-          <ConfirmBulk
+
+          <Payment
             v-if="currentStep === 6"
+            v-model:selectedPaymentMethod="selectedPaymentMethod"
+            v-model:paymentDetails="selectedPaymentDetails"
+          />
+
+          <ConfirmBulk
+            v-if="currentStep === 7"
             :domains="domains"
             :selectedNiche="selectedNiche"
             :selectedCategories="selectedCategories"
             :selectedTemplate="selectedTemplate"
             :selectedHosting="selectedHosting"
+            :selectedPaymentMethod="selectedPaymentMethod"
+            :paymentDetails="selectedPaymentDetails"
             @goToStep="currentStep = $event"
             @confirm="handleConfirm"
             :number-of-websites="numberOfWebsites"
           />
+
+<!--          <ConfirmBulk-->
+<!--            v-if="currentStep === 7"-->
+<!--            :domains="domains"-->
+<!--            :selectedNiche="selectedNiche"-->
+<!--            :selectedCategories="selectedCategories"-->
+<!--            :selectedTemplate="selectedTemplate"-->
+<!--            :selectedHosting="selectedHosting"-->
+<!--            @goToStep="currentStep = $event"-->
+<!--            @confirm="handleConfirm"-->
+<!--            :number-of-websites="numberOfWebsites"-->
+<!--            :payment-details="selectedPaymentMethod"-->
+<!--            :paymentDetails="selectedPaymentDetails"-->
+<!--           selected-payment-method=""-->
+<!--          />-->
 
           <div class="mt-8 flex justify-between">
             <button
@@ -150,6 +174,7 @@
     import SelectHosting from '../singleWebsite/steps/SelectHosting.vue';
     import ConfirmBulk from './steps/ConfirmBulk.vue';
     import SuccessModal from '../../components/SuccessModal.vue';
+    import Payment from '../singleWebsite/steps/Payment.vue';
 
     const emit = defineEmits<{
       (e: 'back'): void;
@@ -164,6 +189,8 @@
     const selectedTemplate = ref(null);
     const selectedHosting = ref(null);
     const showSuccessModal = ref(false);
+    const selectedPaymentMethod = ref(null);
+    const selectedPaymentDetails = ref({});
 
     const steps = [
       'Websites & Domains',
@@ -171,6 +198,7 @@
       'Category',
       'Template',
       'Hosting',
+      'Payment',
       'Confirm',
     ];
 
@@ -190,6 +218,8 @@
         return selectedTemplate.value !== null;
       } else if (currentStep.value === 5) {
         return selectedHosting.value !== null;
+      } else if (currentStep.value === 6) {
+        return selectedPaymentMethod.value !== null;
       }
       return true;
     });
@@ -241,6 +271,7 @@
         selectedCategories: selectedCategories.value,
         selectedTemplate: selectedTemplate.value,
         selectedHosting: selectedHosting.value,
+        selectedPaymentMethod: selectedPaymentMethod.value,
       }));
 
       const createdWebsites = JSON.parse(localStorage.getItem('Created_websites') || '[]');

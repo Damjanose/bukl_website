@@ -73,12 +73,15 @@
         </div>
       </div>
     </div>
-    <button
-      @click="confirm"
-      class="mt-6 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
-    >
-      Confirm and Create
-    </button>
+
+    <div class="flex justify-end mt-8">
+      <button
+        @click="confirm"
+        class="mt-6 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
+      >
+        Confirm and Create
+      </button>
+    </div>
   </div>
 </template>
 
