@@ -16,6 +16,7 @@
       <table class="w-full border-collapse border border-gray-300">
         <thead>
           <tr class="bg-gray-100">
+            <th class="border border-gray-300 px-4 py-2 text-left">Id</th>
             <th class="border border-gray-300 px-4 py-2 text-left">Domain</th>
             <th class="border border-gray-300 px-4 py-2 text-left">Niche</th>
             <th class="border border-gray-300 px-4 py-2 text-left">Category</th>
@@ -26,9 +27,10 @@
         </thead>
         <tbody>
           <tr v-for="website in normalWebsites" :key="website.website_id">
+            <td class="border border-gray-300 px-4 py-2">{{ website.website_id }}</td>
             <td class="border border-gray-300 px-4 py-2">{{ website.domain }}</td>
             <td class="border border-gray-300 px-4 py-2">{{ website.selectedNiche }}</td>
-            <td class="border border-gray-300 px-4 py-2">{{ website.selectedCategory }}</td>
+            <td class="border border-gray-300 px-4 py-2">{{ website.selectedCategories.join(', ') }}</td>
             <td class="border border-gray-300 px-4 py-2">{{ website.selectedTemplate }}</td>
             <td class="border border-gray-300 px-4 py-2">{{ website.selectedHosting }}</td>
             <td class="border border-gray-300 px-4 py-2">
@@ -62,7 +64,7 @@
           <tr v-for="website in bulkWebsites" :key="website.website_id">
             <td class="border border-gray-300 px-4 py-2">{{ website.domain }}</td>
             <td class="border border-gray-300 px-4 py-2">{{ website.selectedNiche }}</td>
-            <td class="border border-gray-300 px-4 py-2">{{ website.selectedCategories.join(', ') }}</td>
+            <td class="border border-gray-300 px-4 py-2">{{ website.selectedCategories }}</td>
             <td class="border border-gray-300 px-4 py-2">{{ website.selectedTemplate }}</td>
             <td class="border border-gray-300 px-4 py-2">{{ website.selectedHosting }}</td>
             <td class="border border-gray-300 px-4 py-2">
@@ -88,7 +90,19 @@
 import { ref } from 'vue';
 import { ArrowLeft } from "lucide-vue-next";
 
-const normalWebsites = ref([]);
+
+type SingleWebsite = {
+  website_id: number;
+  domain: string;
+  selectedNiche: string | null;
+  selectedCategories: string[] | null;
+  selectedTemplate: string | null;
+  selectedHosting: string | null;
+  selectedPaymentMethod: string | null;
+  paymentDetails: Record<string, any>;
+};
+
+const normalWebsites = ref<SingleWebsite[]>([]);
 const bulkWebsites = ref([]);
 
 // Fetch websites from localStorage

@@ -192,7 +192,7 @@
       website_id: Date.now(),
       domain: domain.value,
       selectedNiche: selectedNiche.value,
-      selectedCategory: selectedCategory.value,
+      selectedCategories: selectedCategories.value,
       selectedTemplate: selectedTemplate.value,
       selectedHosting: selectedHosting.value,
       selectedPaymentMethod: selectedPaymentMethod.value,
