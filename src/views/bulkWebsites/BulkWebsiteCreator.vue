@@ -44,37 +44,42 @@
               <input
                 v-model="numberOfWebsites"
                 type="number"
-                min="1"
+                min="0"
+                max="50"
+                value="0"
                 placeholder="Enter number of websites"
                 class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 @input="updateDomains"
               />
             </div>
-            <div v-for="(domain, index) in domains" :key="index" class="mb-4">
-              <label class="block text-sm font-medium text-gray-700 mb-1">
-                Domain for Website {{ index + 1 }}
-              </label>
-              <div class="flex gap-4">
-                <input
-                  v-model="domains[index]"
-                  type="text"
-                  placeholder="Enter domain name"
-                  class="flex-1 rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-                <button
-                  @click="checkDomainAvailability(index)"
-                  class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
-                >
-                  Check
-                </button>
+            <div v-if="!exceedsMaxWebsites">
+              <div v-for="(domain, index) in domains" :key="index" class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                  Domain for Website {{ index + 1 }}
+                </label>
+                <div class="flex gap-4">
+                  <input
+                    v-model="domains[index]"
+                    type="text"
+                    placeholder="Enter domain name"
+                    class="flex-1 rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                  <button
+                    @click="checkDomainAvailability(index)"
+                    class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
+                  >
+                    Check
+                  </button>
+                </div>
+                <p v-if="domainStatus[index]" :class="domainStatus[index] === 'Available' ? 'text-green-600' : 'text-red-600'" class="mt-2">
+                  {{ domainStatus[index] }}
+                </p>
               </div>
-              <p v-if="domainStatus[index]" :class="domainStatus[index] === 'Available' ? 'text-green-600' : 'text-red-600'" class="mt-2">
-                {{ domainStatus[index] }}
+              <p class="text-sm text-gray-500 mt-1" v-if="domains.length">
+                Hint: A valid domain should look like "example.com" or "my_website.org".
               </p>
             </div>
-            <p class="text-sm text-gray-500 mt-1" v-if="domains.length">
-              Hint: A valid domain should look like "example.com" or "mywebsite.org".
-            </p>
+            <p v-else class="text-red-600">Max number of bulk websites is 50. Please reduce the number.</p>
           </div>
 
           <SelectNiche
@@ -118,21 +123,6 @@
             @confirm="handleConfirm"
             :number-of-websites="numberOfWebsites"
           />
-
-<!--          <ConfirmBulk-->
-<!--            v-if="currentStep === 7"-->
-<!--            :domains="domains"-->
-<!--            :selectedNiche="selectedNiche"-->
-<!--            :selectedCategories="selectedCategories"-->
-<!--            :selectedTemplate="selectedTemplate"-->
-<!--            :selectedHosting="selectedHosting"-->
-<!--            @goToStep="currentStep = $event"-->
-<!--            @confirm="handleConfirm"-->
-<!--            :number-of-websites="numberOfWebsites"-->
-<!--            :payment-details="selectedPaymentMethod"-->
-<!--            :paymentDetails="selectedPaymentDetails"-->
-<!--           selected-payment-method=""-->
-<!--          />-->
 
           <div class="mt-8 flex justify-between">
             <button
@@ -224,6 +214,8 @@
       return true;
     });
 
+    const exceedsMaxWebsites = computed(() => numberOfWebsites.value > 50);
+
     const updateDomains = () => {
       const currentLength = domains.value.length;
       if (numberOfWebsites.value > currentLength) {
@@ -242,15 +234,14 @@
         return;
       }
 
-      // Simulate an API call to check domain availability
       const isAvailable = await fakeDomainCheck(domain);
       domainStatus.value[index] = isAvailable ? 'Available' : 'Not Available';
     };
 
-    const fakeDomainCheck = async (domain: string): Promise<boolean> => {
+    const fakeDomainCheck = async (domain: string): Promise<unknown> => {
       return new Promise((resolve) => {
         setTimeout(() => {
-          resolve(domain.length % 2 === 0); // Simulate availability based on domain length
+          resolve(domain.length % 2 === 0);
         }, 500);
       });
     };

@@ -21,7 +21,7 @@
           </button>
         </div>
         <p class="text-sm text-gray-500 mt-1">
-          Hint: A valid domain should look like "example.com" or "mywebsite.org".
+          Hint: A valid domain should look like "example.com" or "my_website.org".
         </p>
         <p v-if="domainStatus" :class="domainStatus === 'Available' ? 'text-green-600' : 'text-red-600'" class="mt-2">
           {{ domainStatus }}
@@ -60,7 +60,7 @@
     }
   };
 
-  const fakeDomainCheck = async (domain: string): Promise<boolean> => {
+  const fakeDomainCheck = async (domain: string): Promise<unknown> => {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(domain.length % 2 === 0);
