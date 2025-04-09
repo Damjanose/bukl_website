@@ -4,6 +4,7 @@
       :credits="credits"
       @navigate-buy-credits="view = 'buy-credits'"
       @navigate-pricing="view = 'pricing'"
+      @navigate-dashboard="view = 'dashboard'"
     />
 
     <DashboardOverview
