@@ -75,7 +75,7 @@
           v-if="currentStep === 7"
           :domain="domain"
           :selectedNiche="selectedNiche"
-          :selectedCategory="selectedCategory"
+          :selectedCategories="selectedCategories"
           :selectedTemplate="selectedTemplate"
           :selectedHosting="selectedHosting"
           :selectedPaymentMethod="selectedPaymentMethod"

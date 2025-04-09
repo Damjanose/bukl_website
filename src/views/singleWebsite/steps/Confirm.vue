@@ -9,7 +9,7 @@
             <Edit3 class="h-5 w-5" />
           </button>
         </h4>
-        <p>{{ domain }}</p>
+        <p class="ml-3">{{ domain }}</p>
       </div>
       <div class="border-b border-gray-200">
         <h4 class="text-md font-semibold flex items-center justify-between">
@@ -18,7 +18,7 @@
             <Edit3 class="h-5 w-5" />
           </button>
         </h4>
-        <p>{{ selectedNiche }}</p>
+        <p class="ml-3">{{ selectedNiche }}</p>
       </div>
       <div class="border-b border-gray-200">
         <h4 class="text-md font-semibold flex items-center justify-between">
@@ -27,7 +27,7 @@
             <Edit3 class="h-5 w-5" />
           </button>
         </h4>
-        <p>{{ selectedCategory }}</p>
+        <p v-for="(item, index) in selectedCategories" :key="index" class="ml-3">- {{ item }}</p>
       </div>
       <div class="border-b border-gray-200">
         <h4 class="text-md font-semibold flex items-center justify-between">
@@ -36,7 +36,7 @@
             <Edit3 class="h-5 w-5" />
           </button>
         </h4>
-        <p>{{ selectedTemplate }}</p>
+        <p class="ml-3">{{ selectedTemplate }}</p>
       </div>
       <div class="border-b border-gray-200">
         <h4 class="text-md font-semibold flex items-center justify-between">
@@ -45,7 +45,7 @@
             <Edit3 class="h-5 w-5" />
           </button>
         </h4>
-        <p>{{ selectedHosting }}</p>
+        <p class="ml-3">{{ selectedHosting }}</p>
       </div>
       <div>
         <h4 class="text-md font-semibold flex items-center justify-between">
@@ -54,8 +54,7 @@
             <Edit3 class="h-5 w-5" />
           </button>
         </h4>
-        <p>{{ selectedPaymentMethod }}</p>
-        <div v-if="paymentDetails">
+        <div v-if="paymentDetails" class="ml-3">
           <p v-if="selectedPaymentMethod === 'card'">
             <strong>Card Details:</strong><br />
             Card Number: {{ paymentDetails.card.cardNumber }}<br />
@@ -89,7 +88,7 @@
   const props = defineProps<{
     domain: string;
     selectedNiche: string | null;
-    selectedCategory: string | null;
+    selectedCategories: string[] | null;
     selectedTemplate: string | null;
     selectedHosting: string | null;
     selectedPaymentMethod: string | null;

@@ -9,7 +9,10 @@
     </button>
 
     <h2 class="text-2xl font-bold mb-6">Website History</h2>
-    <div v-if="websites.length > 0" class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+
+    <!-- Normal Websites -->
+    <div v-if="normalWebsites.length > 0" class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-8">
+      <h3 class="text-lg font-semibold mb-4">Normal Websites</h3>
       <table class="w-full border-collapse border border-gray-300">
         <thead>
           <tr class="bg-gray-100">
@@ -22,7 +25,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="website in websites" :key="website.website_id">
+          <tr v-for="website in normalWebsites" :key="website.website_id">
             <td class="border border-gray-300 px-4 py-2">{{ website.domain }}</td>
             <td class="border border-gray-300 px-4 py-2">{{ website.selectedNiche }}</td>
             <td class="border border-gray-300 px-4 py-2">{{ website.selectedCategory }}</td>
@@ -30,7 +33,7 @@
             <td class="border border-gray-300 px-4 py-2">{{ website.selectedHosting }}</td>
             <td class="border border-gray-300 px-4 py-2">
               <button
-                @click="deleteWebsite(website.website_id)"
+                @click="deleteWebsite(website.website_id, 'normal')"
                 class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
               >
                 Delete
@@ -40,7 +43,42 @@
         </tbody>
       </table>
     </div>
-    <div v-else class="text-gray-600">
+
+    <!-- Bulk Websites -->
+    <div v-if="bulkWebsites.length > 0" class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+      <h3 class="text-lg font-semibold mb-4">Bulk Websites</h3>
+      <table class="w-full border-collapse border border-gray-300">
+        <thead>
+          <tr class="bg-gray-100">
+            <th class="border border-gray-300 px-4 py-2 text-left">Domain</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Niche</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Categories</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Template</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Hosting</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="website in bulkWebsites" :key="website.website_id">
+            <td class="border border-gray-300 px-4 py-2">{{ website.domain }}</td>
+            <td class="border border-gray-300 px-4 py-2">{{ website.selectedNiche }}</td>
+            <td class="border border-gray-300 px-4 py-2">{{ website.selectedCategories.join(', ') }}</td>
+            <td class="border border-gray-300 px-4 py-2">{{ website.selectedTemplate }}</td>
+            <td class="border border-gray-300 px-4 py-2">{{ website.selectedHosting }}</td>
+            <td class="border border-gray-300 px-4 py-2">
+              <button
+                @click="deleteWebsite(website.website_id, 'bulk')"
+                class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div v-if="normalWebsites.length === 0 && bulkWebsites.length === 0" class="text-gray-600">
       <p>No websites found in history.</p>
     </div>
   </div>
@@ -48,20 +86,28 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import {ArrowLeft} from "lucide-vue-next";
+import { ArrowLeft } from "lucide-vue-next";
 
-const websites = ref([]);
+const normalWebsites = ref([]);
+const bulkWebsites = ref([]);
 
 // Fetch websites from localStorage
 const fetchWebsites = () => {
-  const storedWebsites = localStorage.getItem('Created_websites');
-  websites.value = storedWebsites ? JSON.parse(storedWebsites) : [];
+  const storedNormalWebsites = localStorage.getItem('Created_websites');
+  const storedBulkWebsites = localStorage.getItem('Created_bulk_websites');
+  normalWebsites.value = storedNormalWebsites ? JSON.parse(storedNormalWebsites) : [];
+  bulkWebsites.value = storedBulkWebsites ? JSON.parse(storedBulkWebsites) : [];
 };
 
-// Delete a website by ID
-const deleteWebsite = (websiteId: number) => {
-  websites.value = websites.value.filter((website) => website.website_id !== websiteId);
-  localStorage.setItem('Created_websites', JSON.stringify(websites.value));
+// Delete a website by ID and type
+const deleteWebsite = (websiteId: number, type: 'normal' | 'bulk') => {
+  if (type === 'normal') {
+    normalWebsites.value = normalWebsites.value.filter((website) => website.website_id !== websiteId);
+    localStorage.setItem('Created_websites', JSON.stringify(normalWebsites.value));
+  } else {
+    bulkWebsites.value = bulkWebsites.value.filter((website) => website.website_id !== websiteId);
+    localStorage.setItem('Created_bulk_websites', JSON.stringify(bulkWebsites.value));
+  }
 };
 
 // Initialize the component
