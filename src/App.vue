@@ -25,6 +25,7 @@
     <BulkWebsiteCreator
       v-if="view === 'create-bulk'"
       @back="view = 'dashboard'"
+      @update-credits="updateCredits"
     />
 
     <WebsiteHistory

@@ -68,7 +68,7 @@
     } else if (websites <= 50) {
       return websites * 30;
     }
-    return 0; // Default case (should not occur if max is 50)
+    return 0;
   });
 
   const hasEnoughCredits = computed(() => userCredits.value >= requiredCredits.value);
@@ -96,7 +96,7 @@
     domainStatus.value[index] = isAvailable ? 'Available' : 'Not Available';
   };
 
-  const fakeDomainCheck = async (domain: string): Promise<boolean> => {
+  const fakeDomainCheck = async (domain: string): Promise<unknown> => {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(domain.length % 2 === 0);
