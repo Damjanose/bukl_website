@@ -44,63 +44,68 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, computed } from 'vue';
+import { ref, computed } from 'vue';
 
-  const emit = defineEmits<{
-    (e: 'updateDomains', domains: string[]): void;
-    (e: 'updateNumberOfWebsites', number: number): void;
-  }>();
+const emit = defineEmits<{
+  (e: 'updateDomains', domains: string[]): void;
+  (e: 'updateNumberOfWebsites', number: number): void;
+}>();
 
-  const numberOfWebsites = ref(1);
-  const domains = ref<string[]>([]);
-  const domainStatus = ref<string[]>([]);
+const numberOfWebsites = ref(1);
+const domains = ref<string[]>([]);
+const domainStatus = ref<string[]>([]);
 
-  const userCredits = ref<number>(parseInt(localStorage.getItem('credits') || '0', 10));
+const userCredits = ref<number>(parseInt(localStorage.getItem('credits') || '0', 10));
 
-  const requiredCredits = computed(() => {
-    const websites = numberOfWebsites.value;
-    if (websites <= 5) {
-      return websites * 80;
-    } else if (websites <= 20) {
-      return websites * 60;
-    } else if (websites <= 40) {
-      return websites * 50;
-    } else if (websites <= 50) {
-      return websites * 30;
-    }
-    return 0;
+const requiredCredits = computed(() => {
+  const websites = numberOfWebsites.value;
+  if (websites <= 5) {
+    return websites * 80;
+  } else if (websites <= 20) {
+    return websites * 60;
+  } else if (websites <= 40) {
+    return websites * 50;
+  } else if (websites <= 50) {
+    return websites * 30;
+  }
+  return 0;
+});
+
+const hasEnoughCredits = computed(() => userCredits.value >= requiredCredits.value);
+
+const updateDomains = () => {
+  const currentLength = domains.value.length;
+
+  if (numberOfWebsites.value > currentLength) {
+    // Add empty entries for new websites
+    domains.value.push(...Array(numberOfWebsites.value - currentLength).fill(''));
+    domainStatus.value.push(...Array(numberOfWebsites.value - currentLength).fill(null));
+  } else if (numberOfWebsites.value < currentLength) {
+    // Remove extra entries
+    domains.value.splice(numberOfWebsites.value);
+    domainStatus.value.splice(numberOfWebsites.value);
+  }
+
+  emit('updateDomains', domains.value);
+  emit('updateNumberOfWebsites', numberOfWebsites.value);
+};
+
+const checkDomainAvailability = async (index: number) => {
+  const domain = domains.value[index];
+  if (!domain) {
+    domainStatus.value[index] = 'Please enter a domain.';
+    return;
+  }
+
+  const isAvailable = await fakeDomainCheck(domain);
+  domainStatus.value[index] = isAvailable ? 'Available' : 'Not Available';
+};
+
+const fakeDomainCheck = async (domain: string): Promise<unknown> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(domain.length % 2 === 0);
+    }, 500);
   });
-
-  const hasEnoughCredits = computed(() => userCredits.value >= requiredCredits.value);
-
-  const updateDomains = () => {
-    if (numberOfWebsites.value > domains.value.length) {
-      domains.value.push(...Array(numberOfWebsites.value - domains.value.length).fill(''));
-      domainStatus.value.push(...Array(numberOfWebsites.value - domainStatus.value.length).fill(null));
-    } else {
-      domains.value.splice(numberOfWebsites.value);
-      domainStatus.value.splice(numberOfWebsites.value);
-    }
-    emit('updateDomains', domains.value);
-    emit('updateNumberOfWebsites', numberOfWebsites.value);
-  };
-
-  const checkDomainAvailability = async (index: number) => {
-    const domain = domains.value[index];
-    if (!domain) {
-      domainStatus.value[index] = 'Please enter a domain.';
-      return;
-    }
-
-    const isAvailable = await fakeDomainCheck(domain);
-    domainStatus.value[index] = isAvailable ? 'Available' : 'Not Available';
-  };
-
-  const fakeDomainCheck = async (domain: string): Promise<unknown> => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(domain.length % 2 === 0);
-      }, 500);
-    });
-  };
+};
 </script>

@@ -18,19 +18,21 @@
     <SingleWebsiteCreator
       v-if="view === 'create-single'"
       @back="view = 'dashboard'"
-      @navigate-buy-credits="view = 'buy-credits'"
       @update-credits="updateCredits"
+      :edit-data="editData"
     />
 
     <BulkWebsiteCreator
       v-if="view === 'create-bulk'"
       @back="view = 'dashboard'"
       @update-credits="updateCredits"
+      :edit-data="editData"
     />
 
     <WebsiteHistory
       v-if="view === 'history'"
       @back="view = 'dashboard'"
+      @edit-website="handleEditWebsite"
     />
 
     <BuyCredits
@@ -90,6 +92,7 @@
   const showNotEnoughCreditsModal = ref(false);
   const showUpdatePlanModal = ref(false);
   const showUnsubscribeModal = ref(false);
+  const editData = ref(null);
 
   const updateCredits = (newCredits: number) => {
     credits.value = newCredits;
@@ -134,5 +137,10 @@
   const navigateToBuyCredits = () => {
     showNotEnoughCreditsModal.value = false;
     view.value = 'buy-credits';
+  };
+
+  const handleEditWebsite = ({ website, type }: { website: any; type: 'normal' | 'bulk' }) => {
+    editData.value = website;
+    view.value = type === 'normal' ? 'create-single' : 'create-bulk';
   };
 </script>

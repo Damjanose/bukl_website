@@ -41,6 +41,8 @@
         <WebsiteDomainManager
           @updateDomains="domains = $event"
           @updateNumberOfWebsites="numberOfWebsites = $event"
+          :domains="domains"
+          :number-of-websites="numberOfWebsites"
         />
       </div>
 
@@ -118,7 +120,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, computed } from 'vue';
+  import { ref, computed, watch } from 'vue';
   import { ArrowLeft } from 'lucide-vue-next';
   import WebsiteDomainManager from './steps/WebsiteDomainManager.vue';
   import SelectNiche from '../singleWebsite/steps/SelectNiche.vue';
@@ -128,6 +130,18 @@
   import ConfirmBulk from './steps/ConfirmBulk.vue';
   import SuccessModal from '../../components/SuccessModal.vue';
   import Payment from '../singleWebsite/steps/Payment.vue';
+
+  const props = defineProps<{
+    editData?: {
+      domains: string[];
+      selectedNiche: string | null;
+      selectedCategories: string[];
+      selectedTemplate: string | null;
+      selectedHosting: string | null;
+      selectedPaymentMethod: string | null;
+      paymentDetails: Record<string, any>;
+    };
+  }>();
 
   const emit = defineEmits<{
     (e: 'back'): void;
@@ -156,27 +170,30 @@
     'Confirm',
   ];
 
-  const canProceed = computed(() => {
-    if (currentStep.value === 1) {
-      return (
-        numberOfWebsites.value > 0 &&
-        domains.value.length === numberOfWebsites.value &&
-        domains.value.every(domain => domain.trim() !== '') &&
-        domainStatus.value.every(status => status === 'Available')
-      );
-    } else if (currentStep.value === 2) {
-      return selectedNiche.value !== null;
-    } else if (currentStep.value === 3) {
-      return selectedCategories.value.length > 0;
-    } else if (currentStep.value === 4) {
-      return selectedTemplate.value !== null;
-    } else if (currentStep.value === 5) {
-      return selectedHosting.value !== null;
-    } else if (currentStep.value === 6) {
-      return selectedPaymentMethod.value !== null;
-    }
-    return true;
-  });
+ const canProceed = computed(() => {
+   if (currentStep.value === 1) {
+     return (
+       numberOfWebsites.value > 0 &&
+       domains.value.length === numberOfWebsites.value &&
+       domains.value.every(domain => domain.trim() !== '') &&
+       domainStatus.value.every(status => status === 'Available')
+     );
+   }
+   return true;
+ });
+
+ watch(numberOfWebsites, (newCount) => {
+   // Ensure domains and domainStatus arrays are updated when numberOfWebsites changes
+   const currentLength = domains.value.length;
+
+   if (newCount > currentLength) {
+     domains.value.push(...Array(newCount - currentLength).fill(''));
+     domainStatus.value.push(...Array(newCount - currentLength).fill(null));
+   } else if (newCount < currentLength) {
+     domains.value.splice(newCount);
+     domainStatus.value.splice(newCount);
+   }
+ });
 
   const handleNextStep = () => {
     if (currentStep.value === steps.length) {
@@ -215,10 +232,28 @@
       selectedPaymentMethod: selectedPaymentMethod.value,
     }));
 
-    const createdWebsites = JSON.parse(localStorage.getItem('Created_websites') || '[]');
+    const createdWebsites = JSON.parse(localStorage.getItem('Created_bulk_websites') || '[]');
     createdWebsites.push(...websitesData);
     localStorage.setItem('Created_bulk_websites', JSON.stringify(createdWebsites));
 
     showSuccessModal.value = true;
   };
+
+  // Populate fields if editing
+  watch(
+    () => props.editData,
+    (newData) => {
+      if (newData) {
+        domains.value = newData.domains || [];
+        numberOfWebsites.value = newData.domains?.length || 1;
+        selectedNiche.value = newData.selectedNiche;
+        selectedCategories.value = newData.selectedCategories;
+        selectedTemplate.value = newData.selectedTemplate;
+        selectedHosting.value = newData.selectedHosting;
+        selectedPaymentMethod.value = newData.selectedPaymentMethod;
+        selectedPaymentDetails.value = newData.paymentDetails;
+      }
+    },
+    { immediate: true }
+  );
 </script>

@@ -10,7 +10,7 @@
 
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
       <h2 class="text-2xl font-bold mb-6">
-        {{ isBulk ? 'Bulk Website Creation' : 'Create New Website' }}
+        Create New Website
       </h2>
 
       <div class="mb-8">
@@ -116,7 +116,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, computed } from 'vue';
+  import { ref, computed, watch } from 'vue';
   import { ArrowLeft } from 'lucide-vue-next';
   import DomainSetup from './steps/DomainSetup.vue';
   import SelectNiche from './steps/SelectNiche.vue';
@@ -128,7 +128,15 @@
   import SuccessModal from '../../components/SuccessModal.vue';
 
   const props = defineProps<{
-    isBulk?: boolean;
+    editData?: {
+      domain: string;
+      selectedNiche: string | null;
+      selectedCategories: string[];
+      selectedTemplate: string | null;
+      selectedHosting: string | null;
+      selectedPaymentMethod: string | null;
+      paymentDetails: Record<string, any>;
+    };
   }>();
 
   const emit = defineEmits<{
@@ -173,17 +181,11 @@
     return true;
   });
 
-  const nextStep = () => {
-    if (canProceed.value) {
-      currentStep.value++;
-    }
-  };
-
   const handleNextStep = () => {
     if (currentStep.value === steps.length) {
       showSuccessModal.value = true;
     } else {
-      nextStep();
+      currentStep.value++;
     }
   };
 
@@ -211,4 +213,20 @@
 
     showSuccessModal.value = true;
   };
+
+  watch(
+    () => props.editData,
+    (newData) => {
+      if (newData) {
+        domain.value = newData.domain;
+        selectedNiche.value = newData.selectedNiche;
+        selectedCategories.value = newData.selectedCategories;
+        selectedTemplate.value = newData.selectedTemplate;
+        selectedHosting.value = newData.selectedHosting;
+        selectedPaymentMethod.value = newData.selectedPaymentMethod;
+        selectedPaymentDetails.value = newData.paymentDetails;
+      }
+    },
+    { immediate: true }
+  );
 </script>

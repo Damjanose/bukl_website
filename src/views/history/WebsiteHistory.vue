@@ -33,8 +33,14 @@
             <td class="border border-gray-300 px-4 py-2">{{ website.selectedHosting }}</td>
             <td class="border border-gray-300 px-4 py-2">
               <button
+                @click="editWebsite(website, 'normal')"
+                class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+              >
+                Edit
+              </button>
+              <button
                 @click="deleteWebsite(website.website_id, 'normal')"
-                class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+                class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 ml-2"
               >
                 Delete
               </button>
@@ -50,9 +56,9 @@
       <table class="w-full border-collapse border border-gray-300">
         <thead>
           <tr class="bg-gray-100">
-            <th class="border border-gray-300 px-4 py-2 text-left">Domain</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Domains</th>
             <th class="border border-gray-300 px-4 py-2 text-left">Niche</th>
-            <th class="border border-gray-300 px-4 py-2 text-left">Categories</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Category</th>
             <th class="border border-gray-300 px-4 py-2 text-left">Template</th>
             <th class="border border-gray-300 px-4 py-2 text-left">Hosting</th>
             <th class="border border-gray-300 px-4 py-2 text-left">Actions</th>
@@ -67,8 +73,14 @@
             <td class="border border-gray-300 px-4 py-2">{{ website.selectedHosting }}</td>
             <td class="border border-gray-300 px-4 py-2">
               <button
+                @click="editWebsite(website, 'bulk')"
+                class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+              >
+                Edit
+              </button>
+              <button
                 @click="deleteWebsite(website.website_id, 'bulk')"
-                class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+                class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 ml-2"
               >
                 Delete
               </button>
@@ -82,57 +94,62 @@
       <p>No websites found in history.</p>
     </div>
   </div>
-</template>
+  </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { ArrowLeft } from "lucide-vue-next";
+  import { ref } from 'vue';
+  import { ArrowLeft } from "lucide-vue-next";
 
+  type SingleWebsite = {
+    website_id: number;
+    domain: string;
+    selectedNiche: string | null;
+    selectedCategories: string[];
+    selectedTemplate: string | null;
+    selectedHosting: string | null;
+    selectedPaymentMethod: string | null;
+    paymentDetails: Record<string, any>;
+  };
 
-type SingleWebsite = {
-  website_id: number;
-  domain: string;
-  selectedNiche: string | null;
-  selectedCategories: string[];
-  selectedTemplate: string | null;
-  selectedHosting: string | null;
-  selectedPaymentMethod: string | null;
-  paymentDetails: Record<string, any>;
-};
+  type BulkWebsites = {
+    website_id: number;
+    domain: string;
+    selectedNiche: string | null;
+    selectedCategories: string[];
+    selectedTemplate: string | null;
+    selectedHosting: string | null;
+    selectedPaymentMethod: string | null;
+    paymentDetails: Record<string, any>;
+  };
 
-type BulkWebsites = {
-  website_id: number;
-  domain: string;
-  selectedNiche: string | null;
-  selectedCategories: string[];
-  selectedTemplate: string | null;
-  selectedHosting: string | null;
-  selectedPaymentMethod: string | null;
-  paymentDetails: Record<string, any>;
-};
+  const emit = defineEmits<{
+    (e: 'back'): void;
+    (e: 'edit-website', payload: { website: SingleWebsite | BulkWebsites; type: 'normal' | 'bulk' }): void;
+  }>();
 
-const normalWebsites = ref<SingleWebsite[]>([]);
-const bulkWebsites = ref<BulkWebsites[]>([]);
+  const normalWebsites = ref<SingleWebsite[]>([]);
+  const bulkWebsites = ref<BulkWebsites[]>([]);
 
-// Fetch websites from localStorage
-const fetchWebsites = () => {
-  const storedNormalWebsites = localStorage.getItem('Created_websites');
-  const storedBulkWebsites = localStorage.getItem('Created_bulk_websites');
-  normalWebsites.value = storedNormalWebsites ? JSON.parse(storedNormalWebsites) : [];
-  bulkWebsites.value = storedBulkWebsites ? JSON.parse(storedBulkWebsites) : [];
-};
+  const fetchWebsites = () => {
+    const storedNormalWebsites = localStorage.getItem('Created_websites');
+    const storedBulkWebsites = localStorage.getItem('Created_bulk_websites');
+    normalWebsites.value = storedNormalWebsites ? JSON.parse(storedNormalWebsites) : [];
+    bulkWebsites.value = storedBulkWebsites ? JSON.parse(storedBulkWebsites) : [];
+  };
 
-// Delete a website by ID and type
-const deleteWebsite = (websiteId: number, type: 'normal' | 'bulk') => {
-  if (type === 'normal') {
-    normalWebsites.value = normalWebsites.value.filter((website) => website.website_id !== websiteId);
-    localStorage.setItem('Created_websites', JSON.stringify(normalWebsites.value));
-  } else {
-    bulkWebsites.value = bulkWebsites.value.filter((website) => website.website_id !== websiteId);
-    localStorage.setItem('Created_bulk_websites', JSON.stringify(bulkWebsites.value));
-  }
-};
+  const deleteWebsite = (websiteId: number, type: 'normal' | 'bulk') => {
+    if (type === 'normal') {
+      normalWebsites.value = normalWebsites.value.filter((website) => website.website_id !== websiteId);
+      localStorage.setItem('Created_websites', JSON.stringify(normalWebsites.value));
+    } else {
+      bulkWebsites.value = bulkWebsites.value.filter((website) => website.website_id !== websiteId);
+      localStorage.setItem('Created_bulk_websites', JSON.stringify(bulkWebsites.value));
+    }
+  };
 
-// Initialize the component
-fetchWebsites();
+  const editWebsite = (website: SingleWebsite | BulkWebsites, type: 'normal' | 'bulk') => {
+    emit('edit-website', { website, type });
+  };
+
+  fetchWebsites();
 </script>
