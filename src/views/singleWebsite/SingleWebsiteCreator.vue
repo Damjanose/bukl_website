@@ -1,119 +1,119 @@
 <template>
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <button
-        @click="$emit('back')"
-        class="flex items-center text-gray-600 hover:text-gray-900 mb-8"
-      >
-        <ArrowLeft class="h-5 w-5 mr-2" />
-        Back to Dashboard
-      </button>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <button
+      @click="$emit('back')"
+      class="flex items-center text-gray-600 hover:text-gray-900 mb-8"
+    >
+      <ArrowLeft class="h-5 w-5 mr-2" />
+      Back to Dashboard
+    </button>
 
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
-        <h2 class="text-2xl font-bold mb-6">
-          {{ isBulk ? 'Bulk Website Creation' : 'Create New Website' }}
-        </h2>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+      <h2 class="text-2xl font-bold mb-6">
+        {{ isBulk ? 'Bulk Website Creation' : 'Create New Website' }}
+      </h2>
 
-        <div class="mb-8">
-          <div class="flex items-center">
-            <template v-for="(step, index) in steps" :key="step">
+      <div class="mb-8">
+        <div class="flex items-center">
+          <template v-for="(step, index) in steps" :key="step">
+            <div
+              class="flex items-center"
+              :class="{ 'opacity-50': currentStep < index + 1 }"
+            >
               <div
-                class="flex items-center"
-                :class="{ 'opacity-50': currentStep < index + 1 }"
+                class="w-8 h-8 rounded-full flex items-center justify-center"
+                :class="[
+                  currentStep > index + 1 ? 'bg-green-500' : 'bg-indigo-600',
+                  'text-white'
+                ]"
               >
-                <div
-                  class="w-8 h-8 rounded-full flex items-center justify-center"
-                  :class="[
-                    currentStep > index + 1 ? 'bg-green-500' : 'bg-indigo-600',
-                    'text-white'
-                  ]"
-                >
-                  {{ index + 1 }}
-                </div>
-                <span class="ml-2">{{ step }}</span>
+                {{ index + 1 }}
               </div>
-              <div
-                v-if="index < steps.length - 1"
-                class="w-16 h-px bg-gray-300 mx-2"
-              />
-            </template>
-          </div>
-        </div>
-
-        <DomainSetup
-          v-if="currentStep === 1"
-          :domain="domain"
-          @update:domain="domain = $event"
-          @domain-valid="handleNextStep"
-        />
-        <SelectNiche
-          v-if="currentStep === 2"
-          :selectedNiche="selectedNiche"
-          @update:selectedNiche="selectedNiche = $event"
-        />
-        <SelectCategory
-          v-if="currentStep === 3"
-          :selectedNiche="selectedNiche"
-          :selectedCategories="selectedCategories"
-          @update:selectedCategories="selectedCategories = $event"
-        />
-        <SelectTemplate
-          v-if="currentStep === 4"
-          :selectedTemplate="selectedTemplate"
-          @update:selectedTemplate="selectedTemplate = $event"
-        />
-        <SelectHosting
-          v-if="currentStep === 5"
-          :selectedHosting="selectedHosting"
-          @update:selectedHosting="selectedHosting = $event"
-        />
-        <Payment
-          v-if="currentStep === 6"
-          v-model:selectedPaymentMethod="selectedPaymentMethod"
-          v-model:paymentDetails="selectedPaymentDetails"
-        />
-        <Confirm
-          v-if="currentStep === 7"
-          :domain="domain"
-          :selectedNiche="selectedNiche"
-          :selectedCategories="selectedCategories"
-          :selectedTemplate="selectedTemplate"
-          :selectedHosting="selectedHosting"
-          :selectedPaymentMethod="selectedPaymentMethod"
-          :paymentDetails="selectedPaymentDetails"
-          @goToStep="currentStep = $event"
-          @confirm="handleConfirm"
-        />
-
-        <div class="mt-8 flex justify-between">
-          <button
-            v-if="currentStep > 1"
-            @click="currentStep--"
-            class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200"
-          >
-            Previous
-          </button>
-
-          <button
-            v-if="currentStep < steps.length"
-            @click="handleNextStep"
-            :disabled="!canProceed"
-            :class="[
-              'bg-indigo-600 text-white px-4 py-2 rounded-lg',
-              canProceed ? 'hover:bg-indigo-700' : 'cursor-not-allowed opacity-50'
-            ]"
-          >
-            Next
-          </button>
+              <span class="ml-2">{{ step }}</span>
+            </div>
+            <div
+              v-if="index < steps.length - 1"
+              class="w-16 h-px bg-gray-300 mx-2"
+            />
+          </template>
         </div>
       </div>
 
-      <SuccessModal
-        :visible="showSuccessModal"
-        @close="showSuccessModal = false"
-        @back="$emit('back')"
+      <DomainSetup
+        v-if="currentStep === 1"
+        :domain="domain"
+        @update:domain="domain = $event"
+        @domain-valid="handleNextStep"
       />
+      <SelectNiche
+        v-if="currentStep === 2"
+        :selectedNiche="selectedNiche"
+        @update:selectedNiche="selectedNiche = $event"
+      />
+      <SelectCategory
+        v-if="currentStep === 3"
+        :selectedNiche="selectedNiche"
+        :selectedCategories="selectedCategories"
+        @update:selectedCategories="selectedCategories = $event"
+      />
+      <SelectTemplate
+        v-if="currentStep === 4"
+        :selectedTemplate="selectedTemplate"
+        @update:selectedTemplate="selectedTemplate = $event"
+      />
+      <SelectHosting
+        v-if="currentStep === 5"
+        :selectedHosting="selectedHosting"
+        @update:selectedHosting="selectedHosting = $event"
+      />
+      <Payment
+        v-if="currentStep === 6"
+        v-model:selectedPaymentMethod="selectedPaymentMethod"
+        v-model:paymentDetails="selectedPaymentDetails"
+      />
+      <Confirm
+        v-if="currentStep === 7"
+        :domain="domain"
+        :selectedNiche="selectedNiche"
+        :selectedCategories="selectedCategories"
+        :selectedTemplate="selectedTemplate"
+        :selectedHosting="selectedHosting"
+        :selectedPaymentMethod="selectedPaymentMethod"
+        :paymentDetails="selectedPaymentDetails"
+        @goToStep="currentStep = $event"
+        @confirm="handleConfirm"
+      />
+
+      <div class="mt-8 flex justify-between">
+        <button
+          v-if="currentStep > 1"
+          @click="currentStep--"
+          class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200"
+        >
+          Previous
+        </button>
+
+        <button
+          v-if="currentStep < steps.length"
+          @click="handleNextStep"
+          :disabled="!canProceed"
+          :class="[
+            'bg-indigo-600 text-white px-4 py-2 rounded-lg',
+            canProceed ? 'hover:bg-indigo-700' : 'cursor-not-allowed opacity-50'
+          ]"
+        >
+          Next
+        </button>
+      </div>
     </div>
-  </template>
+
+    <SuccessModal
+      :visible="showSuccessModal"
+      @close="showSuccessModal = false"
+      @back="$emit('back')"
+    />
+  </div>
+</template>
 
 <script setup lang="ts">
   import { ref, computed } from 'vue';
