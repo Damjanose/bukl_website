@@ -65,11 +65,17 @@
           </svg>
           <h2 class="text-xl font-semibold text-gray-800">Bulk Websites</h2>
         </div>
-        <p class="text-gray-600 mb-6">
-          Choose the number of websites you need and pay a discounted price per website.
-        </p>
+        <div class="text-gray-600 mb-6">
+          <p class="mb-2">Choose the number of websites you need and get volume discounts:</p>
+          <ul class="list-disc list-inside space-y-1">
+            <li>1–5 websites: <strong>80 Credits</strong> each</li>
+            <li>6–20 websites: <strong>60 Credits</strong> each</li>
+            <li>21–40 websites: <strong>50 Credits</strong> each</li>
+            <li>41–50 websites: <strong>30 Credits</strong> each</li>
+          </ul>
+        </div>
         <div class="mb-4">
-          <label class="font-medium text-gray-700">Number of Websites:</label>
+          <label class="font-medium text-gray-700">NuCalculate total price per website:</label>
           <input
             v-model.number="numberOfWebsites"
             type="number"
@@ -134,48 +140,48 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 
-  const numberOfWebsites = ref<number>(1);
-  const selectedPlan = ref<string | null>(null);
-  const showConfirmModal = ref(false);
-  const planToConfirm = ref<string | null>(null);
+const numberOfWebsites = ref<number>(1);
+const selectedPlan = ref<string | null>(null);
+const showConfirmModal = ref(false);
+const planToConfirm = ref<string | null>(null);
 
-  const calculateBulkCost = (): number => {
-    if (numberOfWebsites.value <= 5) {
-      return numberOfWebsites.value * 80;
-    } else if (numberOfWebsites.value <= 20) {
-      return numberOfWebsites.value * 60;
-    } else if (numberOfWebsites.value <= 40) {
-      return numberOfWebsites.value * 50;
-    } else if (numberOfWebsites.value <= 50) {
-      return numberOfWebsites.value * 30;
-    }
-    return 0;
-  };
+const calculateBulkCost = (): number => {
+  if (numberOfWebsites.value <= 5) {
+    return numberOfWebsites.value * 80;
+  } else if (numberOfWebsites.value <= 20) {
+    return numberOfWebsites.value * 60;
+  } else if (numberOfWebsites.value <= 40) {
+    return numberOfWebsites.value * 50;
+  } else if (numberOfWebsites.value <= 50) {
+    return numberOfWebsites.value * 30;
+  }
+  return 0;
+};
 
-  const openConfirmModal = (plan: string) => {
-    planToConfirm.value = plan;
-    showConfirmModal.value = true;
-  };
+const openConfirmModal = (plan: string) => {
+  planToConfirm.value = plan;
+  showConfirmModal.value = true;
+};
 
-  const confirmPlan = () => {
-    if (planToConfirm.value) {
-      selectedPlan.value = planToConfirm.value;
-      localStorage.setItem('selectedPlan', JSON.stringify(planToConfirm.value));
-    }
-    showConfirmModal.value = false;
-  };
+const confirmPlan = () => {
+  if (planToConfirm.value) {
+    selectedPlan.value = planToConfirm.value;
+    localStorage.setItem('selectedPlan', JSON.stringify(planToConfirm.value));
+  }
+  showConfirmModal.value = false;
+};
 
-  const unsubscribe = () => {
-    selectedPlan.value = null;
-    localStorage.setItem('selectedPlan', JSON.stringify(null));
-  };
+const unsubscribe = () => {
+  selectedPlan.value = null;
+  localStorage.setItem('selectedPlan', JSON.stringify(null));
+};
 
-  onMounted(() => {
-    const savedPlan = localStorage.getItem('selectedPlan');
-    if (savedPlan) {
-      selectedPlan.value = JSON.parse(savedPlan);
-    }
-  });
+onMounted(() => {
+  const savedPlan = localStorage.getItem('selectedPlan');
+  if (savedPlan) {
+    selectedPlan.value = JSON.parse(savedPlan);
+  }
+});
 </script>

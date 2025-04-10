@@ -203,12 +203,10 @@
     createdWebsites.push(websiteData);
     localStorage.setItem('Created_websites', JSON.stringify(createdWebsites));
 
-    // Deduct 100 credits
     const currentCredits = parseInt(localStorage.getItem('credits') || '0', 10);
     const updatedCredits = currentCredits - 100;
     localStorage.setItem('credits', updatedCredits.toString());
 
-    // Emit the updated credits to the parent
     emit('update-credits', updatedCredits);
 
     showSuccessModal.value = true;
