@@ -133,12 +133,12 @@
 
   const emit = defineEmits<{
     (e: 'back'): void;
+    (e: 'update-credits', credits: number): void;
   }>();
 
   const currentStep = ref(1);
   const domain = ref('');
   const selectedNiche = ref(null);
-  const selectedCategory = ref(null);
   const selectedTemplate = ref(null);
   const selectedHosting = ref(null);
   const selectedPaymentMethod = ref(null);
@@ -202,6 +202,15 @@
     const createdWebsites = JSON.parse(localStorage.getItem('Created_websites') || '[]');
     createdWebsites.push(websiteData);
     localStorage.setItem('Created_websites', JSON.stringify(createdWebsites));
+
+    // Deduct 100 credits
+    const currentCredits = parseInt(localStorage.getItem('credits') || '0', 10);
+    const updatedCredits = currentCredits - 100;
+    localStorage.setItem('credits', updatedCredits.toString());
+
+    // Emit the updated credits to the parent
+    emit('update-credits', updatedCredits);
+
     showSuccessModal.value = true;
   };
 </script>

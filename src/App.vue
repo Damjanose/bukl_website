@@ -18,6 +18,8 @@
     <SingleWebsiteCreator
       v-if="view === 'create-single'"
       @back="view = 'dashboard'"
+      @navigate-buy-credits="view = 'buy-credits'"
+      @update-credits="updateCredits"
     />
 
     <BulkWebsiteCreator
@@ -47,7 +49,7 @@
       @navigate-pricing="navigateToPricing"
     />
 
-    <NotEnaughCredit
+    <NotEnoughCredit
       v-if="showNotEnoughCreditsModal"
       @close="showNotEnoughCreditsModal = false"
       @navigate-buy-credits="navigateToBuyCredits"
@@ -77,7 +79,7 @@
   import BuyCredits from './views/buyCredits/BuyCredits.vue';
   import PricingScreen from './views/pricing/PricingScreen.vue';
   import NoPlanSelectedModal from './components/NoPlanSelectedModal.vue';
-  import NotEnaughCredit from './components/NotEnaughCredit.vue';
+  import NotEnoughCredit from './components/NotEnoughCredit.vue';
   import UpdatePlanModal from './components/UpdatePlanModal.vue';
   import UnsubscribeConfirmationModal from './components/UnsubscribeConfirmationModal.vue';
 
@@ -92,12 +94,7 @@
     credits.value = newCredits;
   };
 
-  const unsubscribe = () => {
-    showUnsubscribeModal.value = true;
-  };
-
   const confirmUnsubscribe = () => {
-    selectedPlan.value = null;
     localStorage.setItem('selectedPlan', JSON.stringify(null));
     showUnsubscribeModal.value = false;
   };
@@ -118,7 +115,7 @@
       return;
     }
 
-    const requiredCredits = type === 'single' ? 100 : 80; // Example credit requirements
+    const requiredCredits = type === 'single' ? 100 : 80;
     if (credits.value < requiredCredits) {
       showNotEnoughCreditsModal.value = true;
       return;
