@@ -101,7 +101,6 @@
       </div>
     </div>
 
-    <!-- Empty State -->
     <div
       v-if="normalWebsites.length === 0 && bulkWebsites.length === 0"
       class="text-center text-gray-500 mt-10"

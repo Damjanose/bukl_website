@@ -127,16 +127,18 @@
   import Confirm from './steps/Confirm.vue';
   import SuccessModal from '../../components/SuccessModal.vue';
 
+  interface EditDataType {
+    domain: string;
+    selectedNiche: string | null;
+    selectedCategories: string[];
+    selectedTemplate: string | null;
+    selectedHosting: 'self' | 'bulkweb' | null;
+    selectedPaymentMethod: string | null;
+    paymentDetails: Record<string, any>;
+  }
+
   const props = defineProps<{
-    editData?: {
-      domain: string;
-      selectedNiche: string | null;
-      selectedCategories: string[];
-      selectedTemplate: string | null;
-      selectedHosting: string | null;
-      selectedPaymentMethod: string | null;
-      paymentDetails: Record<string, any>;
-    };
+    editData?: EditDataType
   }>();
 
   const emit = defineEmits<{
@@ -146,10 +148,10 @@
 
   const currentStep = ref(1);
   const domain = ref('');
-  const selectedNiche = ref(null);
-  const selectedTemplate = ref(null);
-  const selectedHosting = ref(null);
-  const selectedPaymentMethod = ref(null);
+  const selectedNiche = ref<string | null>(null);
+  const selectedTemplate = ref<string | null>(null);
+  const selectedHosting = ref<'self' | 'bulkweb' | null>(null);
+  const selectedPaymentMethod = ref<string | null>(null);
   const selectedPaymentDetails = ref({});
   const showSuccessModal = ref(false);
   const selectedCategories = ref<string[]>([]);
@@ -172,7 +174,7 @@
     } else if (currentStep.value === 3) {
       return selectedCategories.value.length > 0;
     } else if (currentStep.value === 4) {
-      return selectedTemplate.value !== null;
+      return selectedTemplate.value !== null && selectedTemplate.value !== '';
     } else if (currentStep.value === 5) {
       return selectedHosting.value !== null;
     } else if (currentStep.value === 6) {

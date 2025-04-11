@@ -25,3 +25,20 @@ export interface Category {
   name: string;
   niche: Niche;
 }
+
+export interface WebsiteData {
+  website_id: number;
+  domain: string;
+  selectedNiche: string | null;
+  selectedCategories: string[];
+  selectedTemplate: string | null;
+  selectedHosting: string | null;
+  selectedPaymentMethod: string | null;
+  paymentDetails: Record<string, any>;
+}
+
+export interface BulkWebsiteData extends WebsiteData {
+  domains: string[];
+}
+
+
